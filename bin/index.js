@@ -1,6 +1,5 @@
 #! /usr/bin/env node
 
-const args = require('args');
 const axios = require('axios');
 const dotenv = require('dotenv');
 const fs = require('fs');
@@ -54,8 +53,7 @@ const init = () => {
   }
 
   if (!fs.existsSync(envFile)) {
-    fs.copyFileSync('./.env.template', envFile);
-    console.log(`.env file copied: ${envFile}`);
+    console.log(`.env file missing: ${envFile}`);
   } else {
     console.log(`.env file already exists: ${envFile}`);
   }
@@ -263,8 +261,6 @@ const main = () => {
 
 }
 
-console.log(command);
-
 switch (command) {
   case 'init':
     init();
@@ -279,6 +275,7 @@ switch (command) {
 
     if (!process.env.PM2_NAMES) {
       console.log('No PM2_NAMES found in .env');
+      init();
     } else {
       main();
       setInterval(main, 60 * 1000);

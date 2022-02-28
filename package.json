@@ -5,11 +5,15 @@
   "bin": {
     "streamr-monitor": "./bin/index.js"
   },
+  "scripts": {
+    "postinstall": "node ./post-install.js"
+  },
   "dependencies": {
     "axios": "^0.26.0",
     "dotenv": "^16.0.0",
     "fs": "^0.0.1-security",
     "moment": "^2.29.1",
-    "os": "^0.1.2"
+    "os": "^0.1.2",
+    "postinstall": "^0.7.4"
   }
 }
