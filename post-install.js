@@ -13,7 +13,7 @@ if (!fs.existsSync(envDirectory)) {
 }
 
 if (!fs.existsSync(envFile)) {
-  fs.copyFileSync(`${process.env.INIT_CWD}/.env.template`, envFile);
+  fs.copyFileSync(`./.env.template`, envFile);
   console.log(`.env file copied: ${envFile}`);
 } else {
   console.log(`.env file already exists: ${envFile}`);
