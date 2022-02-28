@@ -6,7 +6,6 @@
     "streamr-monitor": "./bin/index.js"
   },
   "dependencies": {
-    "args": "^5.0.1",
     "axios": "^0.26.0",
     "dotenv": "^16.0.0",
     "fs": "^0.0.1-security",
