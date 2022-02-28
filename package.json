@@ -1,6 +1,6 @@
 {
   "name": "streamr-monit",
-  "version": "31.0.0-beta.4",
+  "version": "31.0.0-beta.4.2",
   "main": "./bin/index.js",
   "bin": {
     "streamr-monitor": "./bin/index.js"

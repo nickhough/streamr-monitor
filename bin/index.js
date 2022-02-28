@@ -141,7 +141,10 @@ const publishToStreamr = (pm2Name) => {
   const nodeUrl = process.env.BROKER_NODE_URL;
   const nodePort = process.env.BROKER_NODE_PORT;
 
-  axios.post(`${nodeUrl}:${nodePort}/streams/${streamId}`, node, {
+  axios.post(`${nodeUrl}:${nodePort}/streams/${streamId}`, {
+    ...node,
+    pm2Name,
+  }, {
     headers: {
       Authorization: `Bearer ${apiKey}`
     },
