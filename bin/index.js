@@ -102,7 +102,7 @@ const parseWebsocketServer = (message, pm2Name) => {
 };
 
 const parsePeers = (message, pm2Name) => {
-  nodes[pm2Name].peers = message.split(' (')[1].split('), ')[0].split(',');
+  nodes[pm2Name].peers = message.split(' (')[1].split('), ')[0].replace(')', '').split(',');
 };
 
 const parseTracker = (message, pm2Name) => {

@@ -48,7 +48,7 @@ After you've updated the `.env`, you can confirm the environment variables are b
 
 If everything looks good, you're now ready to start the monitor.
 
-`streamr-monitor start` or `streamr-monitor` 
+`streamr-monitor start` 
 
 You may even want to utilize PM2 to manage the monitor as well, in which case you'd start the monitor like this:
 
