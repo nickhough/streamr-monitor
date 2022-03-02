@@ -4,7 +4,7 @@ This package parses PM2 log files and utilizes a Streamr broker node to send mes
 
 # Prerequisites
 
-The host that is running your broker node(s) will need to utilize PM2 to manage the processes. 
+The host that is running your broker node(s) will need to utilize [PM2](https://pm2.io/docs/runtime/guide/installation/) to manage the processes. 
 
 You'll need to know the name of each PM2 process you want to monitor. You can specify the names when 
 starting your broker nodes.
