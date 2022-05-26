@@ -1,0 +1,21 @@
+apps:
+  - name: "01-1"
+    script: streamr-broker
+    args:
+      - 01-1.json
+  - name: "01-2"
+    script: streamr-broker
+    args:
+      - 01-2.json
+  - name: "01-3"
+    script: streamr-broker
+    args:
+      - 01-3.json
+  - name: "01-4"
+    script: streamr-broker
+    args:
+      - 01-4.json
+  - name: "01-5"
+    script: streamr-broker
+    args:
+      - 01-5.json

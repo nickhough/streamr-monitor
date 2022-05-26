@@ -10,6 +10,9 @@ const command = process.argv.slice(2).length > 0 ? process.argv.slice(2)[0] : nu
 const envDirectory = `${os.homedir()}/.streamr-monitor/config`;
 const envFile = `${envDirectory}/.env`;
 
+const streamrDirectory = `${os.homedir()}/.streamr/config`;
+const nodesYml = `${streamrDirectory}/nodes.yml`;
+
 dotenv.config({
   path: envFile,
 });
@@ -56,6 +59,14 @@ const init = () => {
     console.log(`.env file missing: ${envFile}`);
   } else {
     console.log(`.env file already exists: ${envFile}`);
+  }
+
+  if (!fs.existsSync(streamrDirectory)) {
+    fs.mkdirSync(streamrDirectory, {recursive: true});
+  }
+
+  if (!fs.existsSync(nodesYml)) {
+     fs.copyFileSync(`${process.cwd()}/nodes.yml`, nodesYml);
   }
 };
 
