@@ -7,10 +7,15 @@ const moment = require('moment');
 const os = require('os');
 
 const command = process.argv.slice(2).length > 0 ? process.argv.slice(2)[0] : null;
+const args = process.argv.slice(3).length > 0 ? process.argv.slice(3) : null;
+
 const envDirectory = `${os.homedir()}/.streamr-monitor/config`;
 const envFile = `${envDirectory}/.env`;
 
+const ethers = require('ethers');
+const streamrBroker = require('streamr-broker/dist/src/config/ConfigWizard');
 const streamrDirectory = `${os.homedir()}/.streamr/config`;
+
 const nodesYml = `${streamrDirectory}/nodes.yml`;
 
 dotenv.config({
@@ -66,7 +71,7 @@ const init = () => {
   }
 
   if (!fs.existsSync(nodesYml)) {
-     fs.copyFileSync(`${process.cwd()}/nodes.yml`, nodesYml);
+    fs.copyFileSync(`${process.cwd()}/nodes.yml`, nodesYml);
   }
 };
 
@@ -147,7 +152,7 @@ const parseRewardCodeClaimed = (message, pm2Name, timestamp) => {
 const publishToStreamr = (pm2Name) => {
 
   const node = nodes[pm2Name];
-  const apiKey = process.env.BROKER_NODE_APKI_KEY;
+  const apiKey = process.env.BROKER_NODE_API_KEY;
   const streamId = encodeURIComponent(process.env.STREAM_ID);
   const nodeUrl = process.env.BROKER_NODE_URL;
   const nodePort = process.env.BROKER_NODE_PORT;
@@ -205,6 +210,82 @@ const processEntry = (entry, pm2Name) => {
     parseRewardCodeClaimed(message, pm2Name, timestamp);
   }
 
+};
+
+const setupNodes = () => {
+
+  let serverIndex = args[0];
+  let count = args[1];
+  let ENV_PM2_NAMES = 'PM2_NAMES=';
+
+  if (!serverIndex) {
+    console.log('You must provide a server index');
+    return false;
+  }
+
+  if (!count) {
+    console.log('You must provide the number of nodes');
+    return false;
+  }
+
+  for (let i = 0; i < count; i++) {
+
+    let offset = i * 10;
+    let privateKey = ethers.Wallet.createRandom().privateKey;
+    let streamrApiKey = streamrBroker.CONFIG_TEMPLATE.apiAuthentication.keys[0];
+    let pm2Name = `${serverIndex}-${i + 1}`;
+    ENV_PM2_NAMES += `${i > 0 ? ',' : ''}${pm2Name}`
+
+    let template = {
+      '$schema': 'http://schema.streamr.network/config-v1.schema.json',
+      'client': {
+        'auth': {
+          'privateKey': privateKey
+        }
+      },
+      'plugins': {
+        'metrics': {},
+        'websocket': {
+          'port': 7170 + offset,
+        },
+        'mqtt': {
+          'port': 1883 + offset
+        },
+        'publishHttp': {},
+        'brubeckMiner': {}
+      },
+      'apiAuthentication': {
+        'keys': [
+          streamrApiKey
+        ]
+      },
+      'httpServer': {
+        'port': 7171 + offset
+      }
+    };
+
+    let file = `${streamrDirectory}/${pm2Name}.json`;
+
+    if (!fs.existsSync(file)) {
+      fs.writeFileSync(file, JSON.stringify(template, null, 4), () => {});
+    } else {
+      console.error(`Node config already exists! [${file}]`);
+    }
+  }
+
+  // Update .env
+
+  let envContent = fs.readFileSync(envFile).toString();
+  envContent = envContent.split(os.EOL).map((line) => {
+    return line.startsWith('PM2_NAMES') ? ENV_PM2_NAMES : line;
+  }).join(os.EOL);
+  fs.writeFileSync(envFile, envContent);
+
+  // Update nodes.yml
+
+  let nodesYmlContent = fs.readFileSync(nodesYml).toString();
+  nodesYmlContent = nodesYmlContent.replaceAll('XX-', `${serverIndex}-`);
+  fs.writeFileSync(nodesYml, nodesYmlContent);
 };
 
 const shouldSkip = (entry) => {
@@ -282,6 +363,10 @@ switch (command) {
 
   case 'env':
     console.log(process.env);
+    break;
+
+  case 'setupNodes':
+    setupNodes();
     break;
 
   case 'start':

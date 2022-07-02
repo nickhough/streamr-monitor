@@ -1,6 +1,6 @@
 {
   "name": "streamr-monitor",
-  "version": "v31.0.1",
+  "version": "v31.0.4",
   "main": "./bin/index.js",
   "bin": {
     "streamr-monitor": "./bin/index.js"
@@ -11,9 +11,11 @@
   "dependencies": {
     "axios": "^0.26.0",
     "dotenv": "^16.0.0",
+    "ethers": "^5.6.9",
     "fs": "^0.0.1-security",
     "moment": "^2.29.1",
     "os": "^0.1.2",
-    "postinstall": "^0.7.4"
+    "postinstall": "^0.7.4",
+    "streamr-broker": "^31.0.4"
   }
 }
