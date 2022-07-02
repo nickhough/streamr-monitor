@@ -9,7 +9,7 @@ const envDirectory = `${os.homedir()}/.streamr-monitor/config`;
 const envFile = `${envDirectory}/.env`;
 
 const nodesYmlDirectory = `${os.homedir()}/.streamr/config`;
-const nodesYmlFile = `${envDirectory}/nodes.yml`;
+const nodesYmlFile = `${nodesYmlDirectory}/nodes.yml`;
 
 if (!fs.existsSync(nodesYmlDirectory)) {
   fs.mkdirSync(nodesYmlDirectory, {recursive: true});
