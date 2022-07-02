@@ -1,6 +1,6 @@
 {
   "name": "streamr-monitor",
-  "version": "v31.0.4.1",
+  "version": "v31.0.4-1",
   "main": "./bin/index.js",
   "bin": {
     "streamr-monitor": "./bin/index.js"
