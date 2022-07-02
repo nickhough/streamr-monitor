@@ -71,7 +71,7 @@ const init = () => {
   }
 
   if (!fs.existsSync(nodesYml)) {
-    fs.copyFileSync(`${process.cwd()}/nodes.yml`, nodesYml);
+    fs.copyFileSync(`./nodes.yml`, nodesYml);
   }
 };
 
