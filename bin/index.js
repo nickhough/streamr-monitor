@@ -2,6 +2,7 @@
 
 const axios = require('axios');
 const dotenv = require('dotenv');
+const ethers = require('ethers');
 const fs = require('fs');
 const moment = require('moment');
 const os = require('os');
@@ -12,10 +13,8 @@ const args = process.argv.slice(3).length > 0 ? process.argv.slice(3) : null;
 const envDirectory = `${os.homedir()}/.streamr-monitor/config`;
 const envFile = `${envDirectory}/.env`;
 
-const ethers = require('ethers');
 const streamrBroker = require('streamr-broker/dist/src/config/ConfigWizard');
 const streamrDirectory = `${os.homedir()}/.streamr/config`;
-
 const nodesYml = `${streamrDirectory}/nodes.yml`;
 
 dotenv.config({
@@ -56,6 +55,8 @@ const cleanEntry = (entry) => {
 
 const init = () => {
 
+  // .env
+
   if (!fs.existsSync(envDirectory)) {
     fs.mkdirSync(envDirectory, {recursive: true});
   }
@@ -66,12 +67,16 @@ const init = () => {
     console.log(`.env file already exists: ${envFile}`);
   }
 
+  // nodes.yml
+
   if (!fs.existsSync(streamrDirectory)) {
     fs.mkdirSync(streamrDirectory, {recursive: true});
   }
 
   if (!fs.existsSync(nodesYml)) {
-    fs.copyFileSync(`./nodes.yml`, nodesYml);
+    console.log(`nodes.yml file missing: ${nodesYml}`);
+  } else {
+    console.log(`nodes.yml file already exists: ${nodesYml}`);
   }
 };
 
